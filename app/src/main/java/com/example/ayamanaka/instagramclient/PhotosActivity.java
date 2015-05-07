@@ -22,6 +22,7 @@ public class PhotosActivity extends ActionBarActivity {
     public static final String CLIENT_ID = "5713017ddc9d43618241418af40320f0";
     private ArrayList<InstagramPhoto> photos;
     private InstagramPhotosAdapter aPhotos;
+    private AsyncHttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,8 @@ public class PhotosActivity extends ActionBarActivity {
         photos = new ArrayList<>();
         // Create the adapter linking it to the source
         aPhotos = new InstagramPhotosAdapter(this, photos);
+        // Create the AsyncHttpClient
+        client = new AsyncHttpClient();
         // Find the ListView from the layout
         ListView lvPhotos = (ListView) findViewById(R.id.lvPhotos);
         // Set the Adapter binding it to the ListView
@@ -39,20 +42,35 @@ public class PhotosActivity extends ActionBarActivity {
         fetchPopularPhotos();
     }
 
-    // Trigger API request
-    public void fetchPopularPhotos() {
-//        InstagramAPI api = new InstagramAPI();
-//        photos = api.fetchPopularPhotos();
-//        aPhotos.notifyDataSetChanged();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_photos, menu);
+        return true;
+    }
 
-        /*
-        Client ID:  	5713017ddc9d43618241418af40320f0
-        */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Fetches the popular photos from Instagram and updates the UI with the new photos
+     */
+    public void fetchPopularPhotos()
+    {
+        // URL for fetching popular photos
         String url = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID;
-
-        // Create the network client
-        AsyncHttpClient client = new AsyncHttpClient();
 
         // Trigger the GET request
         client.get(url, null, new JsonHttpResponseHandler() {
@@ -94,35 +112,10 @@ public class PhotosActivity extends ActionBarActivity {
             }
 
             // onFailure (fail)
-
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 // DO SOMETHING
             }
         });
-
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_photos, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.ayamanaka.instagramclient;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,9 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
         // Insert the model data into each of the view items
-        tvCaption.setText(photo.caption);
+        String authorUsername = "@" + photo.username;
+        String boldAuthorUsernameWithCaption = "<b>" + authorUsername + "</b> -- " + photo.caption;
+        tvCaption.setText(Html.fromHtml(boldAuthorUsernameWithCaption));
         // Clear out the ImageView if it was recycled (right away)
         ivPhoto.setImageResource(0);
         // Insert the image using picasso (send out async)
