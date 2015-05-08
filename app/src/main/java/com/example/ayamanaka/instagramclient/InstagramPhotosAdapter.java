@@ -36,7 +36,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
         // Insert the model data into each of the view items
-        String authorUsername = "@" + photo.username;
+        String authorUsername = "@" + photo.user.username;
         String boldAuthorUsernameWithCaption = "<b>" + authorUsername + "</b> -- " + photo.caption;
         tvCaption.setText(Html.fromHtml(boldAuthorUsernameWithCaption));
         // Clear out the ImageView if it was recycled (right away)

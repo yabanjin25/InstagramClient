@@ -7,7 +7,8 @@ public class InstagramPhoto {
     public String caption;
     public ArrayList<InstagramComment> comments;
     public String type;
-    public int createdTime;
+    public String imageUrl;
+    public String createdTime;
     public int imageHeight;
     public int likesCount;
 }

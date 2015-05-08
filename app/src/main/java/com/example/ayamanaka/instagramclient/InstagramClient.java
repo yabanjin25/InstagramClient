@@ -49,20 +49,7 @@ public class InstagramClient {
                         // get JSONObject at that position
                         JSONObject photoJSON = photosJSON.getJSONObject(i);
                         // decode the attributes of the JSON into a data model
-                        InstagramPhoto photo = new InstagramPhoto();
-                        // - Author Name: { "data" => [x] => "user" => "username" }
-                        photo.username = photoJSON.getJSONObject("user").getString("username");
-                        // - Caption: { "data" => [x] => "caption" => "text" }
-                        photo.caption = photoJSON.getJSONObject("caption").getString("text");
-                        // - Type: { "data" => [x] => "type" } ("image" or "video")
-                        //photo.type = photoJSON.getJSONObject("type").getString("text");
-                        // - URL: { "data" => [x] => "images" => "standard_resolution" => "url" }
-                        photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
-                        // Height
-                        photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
-                        // Likes Count
-                        photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
-                        // Add decoded object to the photos
+                        InstagramPhoto photo = getInstagramPhotoFromJSONObject(photoJSON);
                         popularPhotos.add(photo);
                     }
                 } catch (JSONException e) {
@@ -86,5 +73,86 @@ public class InstagramClient {
     public void setInstagramClientListener(InstagramClientListener listener) {
         this.listener = listener;
     }
+
+    protected InstagramPhoto getInstagramPhotoFromJSONObject(JSONObject photoJSONObject)
+    {
+        try {
+            InstagramPhoto photo = new InstagramPhoto();
+            // - Author Name: { "data" => [x] => "user" }
+            photo.user = getInstagramUserFromJSONObject(photoJSONObject.getJSONObject("user"));
+            // - Caption: { "data" => [x] => "caption" => "text" }
+            photo.caption = photoJSONObject.getJSONObject("caption").getString("text");
+            // - Comments: { "data" => [x] => "comments" => "data" => [x] }
+            photo.comments = getInstagramCommentsFromJSONArray(photoJSONObject.getJSONObject("comments").getJSONArray("data"));
+            // - Type: { "data" => [x] => "type" } ("image" or "video")
+            photo.type = photoJSONObject.getString("type");
+            // - URL: { "data" => [x] => "images" => "standard_resolution" => "url" }
+            photo.imageUrl = photoJSONObject.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
+            // - Created Time: { "data" => [x] => "created_time"}
+            photo.createdTime = photoJSONObject.getString("created_time");
+            // Height
+            photo.imageHeight = photoJSONObject.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
+            // Likes Count
+            photo.likesCount = photoJSONObject.getJSONObject("likes").getInt("count");
+            // Add decoded object to the photos
+            return photo;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    protected InstagramUser getInstagramUserFromJSONObject(JSONObject userJSONObject)
+    {
+        try {
+            InstagramUser user = new InstagramUser();
+            user.id = userJSONObject.getString("id");
+            user.username = userJSONObject.getString("username");
+            user.fullName = userJSONObject.getString("full_name");
+            user.profilePictureUrl = userJSONObject.getString("profile_picture");
+
+            return user;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    protected ArrayList<InstagramComment> getInstagramCommentsFromJSONArray(JSONArray commentsJSONArray)
+    {
+        try {
+            ArrayList<InstagramComment> commentsArray = new ArrayList<>();
+
+            for (int i = 0; i < commentsJSONArray.length(); i++) {
+                JSONObject commentJSONObject = commentsJSONArray.getJSONObject(i);
+                InstagramComment instagramComment = getInstagramCommentFromJSONObject(commentJSONObject);
+                commentsArray.add(instagramComment);
+            }
+
+            return commentsArray;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    protected InstagramComment getInstagramCommentFromJSONObject(JSONObject jsonObject)
+    {
+        try {
+            InstagramComment comment = new InstagramComment();
+            comment.user = getInstagramUserFromJSONObject(jsonObject.getJSONObject("from"));
+            comment.text = jsonObject.getString("text");
+            comment.createdTime = jsonObject.getString("created_time");
+            return comment;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
 }
