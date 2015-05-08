@@ -17,7 +17,6 @@ public class PhotosActivity extends ActionBarActivity {
     private InstagramPhotosAdapter aPhotos;
     private InstagramClient instagramClient;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +33,7 @@ public class PhotosActivity extends ActionBarActivity {
                     photos.add(photo);
                 }
                 aPhotos.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
             }
         });
 
@@ -43,7 +43,6 @@ public class PhotosActivity extends ActionBarActivity {
             @Override
             public void onRefresh() {
                 fetchPopularPhotos();
-                swipeContainer.setRefreshing(false);
             }
         });
 
@@ -52,7 +51,6 @@ public class PhotosActivity extends ActionBarActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
 
         // SEND OUT API REQUEST TO POPULAR PHOTOS
         photos = new ArrayList<>();
