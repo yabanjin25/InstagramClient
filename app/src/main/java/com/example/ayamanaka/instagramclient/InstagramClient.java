@@ -81,7 +81,7 @@ public class InstagramClient {
             // - Author Name: { "data" => [x] => "user" }
             photo.user = getInstagramUserFromJSONObject(photoJSONObject.getJSONObject("user"));
             // - Caption: { "data" => [x] => "caption" => "text" }
-            photo.caption = photoJSONObject.getJSONObject("caption").getString("text");
+            photo.caption = getCaptionFromJSONObject(photoJSONObject);
             // - Comments: { "data" => [x] => "comments" => "data" => [x] }
             photo.comments = getInstagramCommentsFromJSONArray(photoJSONObject.getJSONObject("comments").getJSONArray("data"));
             // - Type: { "data" => [x] => "type" } ("image" or "video")
@@ -98,9 +98,8 @@ public class InstagramClient {
             return photo;
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     protected InstagramUser getInstagramUserFromJSONObject(JSONObject userJSONObject)
@@ -115,9 +114,8 @@ public class InstagramClient {
             return user;
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     protected ArrayList<InstagramComment> getInstagramCommentsFromJSONArray(JSONArray commentsJSONArray)
@@ -134,9 +132,8 @@ public class InstagramClient {
             return commentsArray;
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     protected InstagramComment getInstagramCommentFromJSONObject(JSONObject jsonObject)
@@ -149,10 +146,23 @@ public class InstagramClient {
             return comment;
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
+    protected String getCaptionFromJSONObject(JSONObject jsonObject)
+    {
+        try {
+            JSONObject captionObject = jsonObject.optJSONObject("caption");
+            if (captionObject == null) {
+                return "";
+            } else {
+                return captionObject.getString("text");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
