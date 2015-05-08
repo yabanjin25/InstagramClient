@@ -42,7 +42,11 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         // Clear out the ImageView if it was recycled (right away)
         ivPhoto.setImageResource(0);
         // Insert the image using picasso (send out async)
-        Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
+        Picasso.with(getContext())
+                .load(photo.imageUrl)
+                .placeholder(R.drawable.blue_instagram_icon)
+                .error(R.drawable.blue_instagram_icon)
+                .into(ivPhoto);
         // Return the created item as a view
         return convertView;
     }
