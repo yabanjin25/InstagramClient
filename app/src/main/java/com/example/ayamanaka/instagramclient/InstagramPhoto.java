@@ -1,9 +1,13 @@
 package com.example.ayamanaka.instagramclient;
 
+import java.util.ArrayList;
+
 public class InstagramPhoto {
-    public String username;
+    public InstagramUser user;
     public String caption;
-    public String imageUrl;
+    public ArrayList<InstagramComment> comments;
+    public String type;
+    public int createdTime;
     public int imageHeight;
     public int likesCount;
 }
