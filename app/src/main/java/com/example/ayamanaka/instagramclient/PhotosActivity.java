@@ -23,6 +23,7 @@ public class PhotosActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photos);
 
+        // Initialize InstagramClient
         this.instagramClient = new InstagramClient();
         // Setup the listener for this object
         instagramClient.setInstagramClientListener(new InstagramClient.InstagramClientListener() {
@@ -62,20 +63,6 @@ public class PhotosActivity extends ActionBarActivity {
         // Set the Adapter binding it to the ListView
         lvPhotos.setAdapter(aPhotos);
         // Fetch the popular photos
-        // Create InstagramClient
-        this.instagramClient = new InstagramClient();
-        // Setup the listener for this object
-        instagramClient.setInstagramClientListener(new InstagramClient.InstagramClientListener() {
-            @Override
-            public void onFetchPopularPhotos(ArrayList<InstagramPhoto> popularPhotos) {
-                photos.clear();
-                for (InstagramPhoto photo : popularPhotos) {
-                    photos.add(photo);
-                }
-                aPhotos.notifyDataSetChanged();
-            }
-        });
-
         fetchPopularPhotos();
     }
 
