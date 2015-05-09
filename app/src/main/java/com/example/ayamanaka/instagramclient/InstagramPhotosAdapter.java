@@ -37,10 +37,12 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         // Look up the views for populating the data (image, caption)
         TextView tvUsernameMain = (TextView) convertView.findViewById(R.id.tvUsernameMain);
         TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
+        TextView tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
         ImageView ivUserProfilePicture = (ImageView) convertView.findViewById(R.id.ivUserProfilePicture);
         // Insert the model data into each of the view items
         String authorUsername = photo.user.username;
+        tvCreatedTime.setText(photo.getCreatedTimeForDisplay());
         tvUsernameMain.setText(authorUsername);
         String boldAuthorUsernameWithCaption = "<b>@" + authorUsername + "</b> -- " + photo.caption;
         tvCaption.setText(Html.fromHtml(boldAuthorUsernameWithCaption));
@@ -66,4 +68,5 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         // Return the created item as a view
         return convertView;
     }
+
 }
