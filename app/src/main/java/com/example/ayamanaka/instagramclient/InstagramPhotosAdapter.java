@@ -9,7 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
@@ -33,20 +35,34 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_photo, parent, false);
         }
         // Look up the views for populating the data (image, caption)
+        TextView tvUsernameMain = (TextView) convertView.findViewById(R.id.tvUsernameMain);
         TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
+        ImageView ivUserProfilePicture = (ImageView) convertView.findViewById(R.id.ivUserProfilePicture);
         // Insert the model data into each of the view items
-        String authorUsername = "@" + photo.user.username;
-        String boldAuthorUsernameWithCaption = "<b>" + authorUsername + "</b> -- " + photo.caption;
+        String authorUsername = photo.user.username;
+        tvUsernameMain.setText(authorUsername);
+        String boldAuthorUsernameWithCaption = "<b>@" + authorUsername + "</b> -- " + photo.caption;
         tvCaption.setText(Html.fromHtml(boldAuthorUsernameWithCaption));
         // Clear out the ImageView if it was recycled (right away)
         ivPhoto.setImageResource(0);
         // Insert the image using picasso (send out async)
+        Transformation transformation = new RoundedTransformationBuilder()
+                .cornerRadiusDp(90)
+                .oval(false)
+                .build();
+
         Picasso.with(getContext())
                 .load(photo.imageUrl)
                 .placeholder(R.drawable.blue_instagram_icon)
                 .error(R.drawable.blue_instagram_icon)
                 .into(ivPhoto);
+        Picasso.with(getContext())
+                .load(photo.user.profilePictureUrl)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .transform(transformation)
+                .into(ivUserProfilePicture);
         // Return the created item as a view
         return convertView;
     }
