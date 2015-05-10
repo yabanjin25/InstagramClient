@@ -1,6 +1,6 @@
-# SimpleToDo
+# Instagram Client
 
-This is Project 0 for the CodePath Android Bootcamp.
+This is Project 1 for the CodePath Android Bootcamp.
 
 This is an Instagram Popular Photos Viewer application that allows a user to view Instagram's current popular photos.
 
