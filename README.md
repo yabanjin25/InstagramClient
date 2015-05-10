@@ -21,4 +21,6 @@ Completed user stories:
 
 Walkthrough of all user stories:
 
+![Video Walkthrough](InstagramPhotoViewerWalkthrough.gif)
+
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
