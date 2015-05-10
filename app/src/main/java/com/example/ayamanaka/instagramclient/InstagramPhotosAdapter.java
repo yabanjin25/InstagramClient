@@ -41,6 +41,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
         TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
         TextView tvViewAllComments = (TextView) convertView.findViewById(R.id.tvViewAllComments);
+        TextView tvComment = (TextView) convertView.findViewById(R.id.tvComment);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
         ImageView ivUserProfilePicture = (ImageView) convertView.findViewById(R.id.ivUserProfilePicture);
 
@@ -49,8 +50,15 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         tvCreatedTime.setText(photo.getCreatedTimeForDisplay());
         tvLikes.setText(photo.getLikesCountForDisplay() + " likes");
         tvViewAllComments.setText("view all " + photo.getCommentsCountForDisplay() + " comments");
+
+        if (photo.comments.size() > 0) {
+            tvComment.setText(photo.comments.get(0).getCommentForDisplay());
+        } else {
+            tvComment.setVisibility(View.GONE);
+        }
+
         tvUsernameMain.setText(authorUsername);
-        String boldAuthorUsernameWithCaption = "<b>" + authorUsername + "</b> -- " + photo.caption;
+        String boldAuthorUsernameWithCaption = "<font color=\"#517fa4\"><b>" + authorUsername + "</b></font> " + photo.caption;
         tvCaption.setText(Html.fromHtml(boldAuthorUsernameWithCaption));
         // Clear out the ImageView if it was recycled (right away)
         ivPhoto.setImageResource(0);
