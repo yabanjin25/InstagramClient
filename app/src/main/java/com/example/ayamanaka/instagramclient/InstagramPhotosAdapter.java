@@ -40,6 +40,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
         TextView tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
         TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
+        TextView tvViewAllComments = (TextView) convertView.findViewById(R.id.tvViewAllComments);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
         ImageView ivUserProfilePicture = (ImageView) convertView.findViewById(R.id.ivUserProfilePicture);
 
@@ -47,6 +48,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         String authorUsername = photo.user.username;
         tvCreatedTime.setText(photo.getCreatedTimeForDisplay());
         tvLikes.setText(photo.getLikesCountForDisplay() + " likes");
+        tvViewAllComments.setText("view all " + photo.getCommentsCountForDisplay() + " comments");
         tvUsernameMain.setText(authorUsername);
         String boldAuthorUsernameWithCaption = "<b>" + authorUsername + "</b> -- " + photo.caption;
         tvCaption.setText(Html.fromHtml(boldAuthorUsernameWithCaption));

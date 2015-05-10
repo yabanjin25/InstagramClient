@@ -69,6 +69,47 @@ public class InstagramClient {
         });
     }
 
+    public void fetchPhotoComments(String photoId) {
+        // URL for fetching popular photos
+        String url = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID;
+
+        // Trigger the GET request
+        client.get(url, null, new JsonHttpResponseHandler() {
+            // onSuccess (worked)
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // Expecting a JSONObject
+                ArrayList<InstagramPhoto> popularPhotos = new ArrayList<>();
+
+                // Iterate each of the photo items and decode the item into a java object
+                JSONArray photosJSON = null;
+                try {
+                    photosJSON = response.getJSONArray("data");     // array of posts
+                    for (int i = 0; i < photosJSON.length(); i++) {
+                        // get JSONObject at that position
+                        JSONObject photoJSON = photosJSON.getJSONObject(i);
+                        // decode the attributes of the JSON into a data model
+                        InstagramPhoto photo = getInstagramPhotoFromJSONObject(photoJSON);
+                        popularPhotos.add(photo);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (listener != null) {
+                    listener.onFetchPopularPhotos(popularPhotos); // <---- fire listener here
+                }
+            }
+
+            // onFailure (fail)
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                // DO SOMETHING
+            }
+        });
+    }
+
     // Assign the listener implementing events interface that will receive the events
     public void setInstagramClientListener(InstagramClientListener listener) {
         this.listener = listener;
@@ -78,12 +119,16 @@ public class InstagramClient {
     {
         try {
             InstagramPhoto photo = new InstagramPhoto();
+            // - Id: { "data" => [x] => "id" }
+            photo.id = photoJSONObject.getString("id");
             // - Author Name: { "data" => [x] => "user" }
             photo.user = getInstagramUserFromJSONObject(photoJSONObject.getJSONObject("user"));
             // - Caption: { "data" => [x] => "caption" => "text" }
             photo.caption = getCaptionFromJSONObject(photoJSONObject);
             // - Comments: { "data" => [x] => "comments" => "data" => [x] }
             photo.comments = getInstagramCommentsFromJSONArray(photoJSONObject.getJSONObject("comments").getJSONArray("data"));
+            // - Comments: { "data" => [x] => "comments" => "count" }
+            photo.commentsCount = photoJSONObject.getJSONObject("comments").getInt("count");
             // - Type: { "data" => [x] => "type" } ("image" or "video")
             photo.type = photoJSONObject.getString("type");
             // - URL: { "data" => [x] => "images" => "standard_resolution" => "url" }
