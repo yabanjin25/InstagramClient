@@ -1,7 +1,8 @@
 package com.example.ayamanaka.instagramclient;
 
 import android.content.Context;
-import android.text.Html;
+import android.content.Intent;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,19 @@ import com.squareup.picasso.Transformation;
 import java.util.List;
 
 public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
+
+    private final int REQUEST_CODE = 20;
+    private final Context context;
+    private final List<InstagramPhoto> photos;
+    private PhotosActivity activity;
+
     // What data do we need from the activity
     // Context, Data Source
-    public InstagramPhotosAdapter(Context context, List<InstagramPhoto> objects) {
-        super(context, android.R.layout.simple_list_item_1, objects);
+    public InstagramPhotosAdapter(Context context, PhotosActivity activity, List<InstagramPhoto> photos) {
+        super(context, android.R.layout.simple_list_item_1, photos);
+        this.context = context;
+        this.activity = activity;
+        this.photos = photos;
     }
     // What our item looks like
     // Use the template to display each photo
@@ -27,6 +37,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final int pos = position;
         // Get the data item for this position
         InstagramPhoto photo = getItem(position);
         // Check if we are using a recycled view, if not we need to inflate
@@ -41,6 +52,17 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
         TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
         TextView tvViewAllComments = (TextView) convertView.findViewById(R.id.tvViewAllComments);
+
+        tvViewAllComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(activity, CommentsActivity.class);
+                InstagramPhoto photo = photos.get(pos);
+                i.putExtra("photo", photo);
+                activity.startActivityForResult(i, REQUEST_CODE);
+            }
+        });
+
         TextView tvComment = (TextView) convertView.findViewById(R.id.tvComment);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
         ImageView ivUserProfilePicture = (ImageView) convertView.findViewById(R.id.ivUserProfilePicture);
@@ -58,8 +80,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         }
 
         tvUsernameMain.setText(authorUsername);
-        String boldAuthorUsernameWithCaption = "<font color=\"#517fa4\"><b>" + authorUsername + "</b></font> " + photo.caption;
-        tvCaption.setText(Html.fromHtml(boldAuthorUsernameWithCaption));
+        Spanned boldAuthorUsernameWithCaption = photo.getUsernameAndCaptionForDisplay();
+        tvCaption.setText(boldAuthorUsernameWithCaption);
         // Clear out the ImageView if it was recycled (right away)
         ivPhoto.setImageResource(0);
         // Insert the image using picasso (send out async)

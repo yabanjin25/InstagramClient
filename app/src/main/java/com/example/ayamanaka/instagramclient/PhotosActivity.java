@@ -35,6 +35,9 @@ public class PhotosActivity extends ActionBarActivity {
                 aPhotos.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
             }
+            @Override
+            public void onFetchComments(ArrayList<InstagramComment> comments) {
+            }
         });
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -55,7 +58,7 @@ public class PhotosActivity extends ActionBarActivity {
         // SEND OUT API REQUEST TO POPULAR PHOTOS
         photos = new ArrayList<>();
         // Create the adapter linking it to the source
-        aPhotos = new InstagramPhotosAdapter(this, photos);
+        aPhotos = new InstagramPhotosAdapter(this, this, photos);
         // Find the ListView from the layout
         ListView lvPhotos = (ListView) findViewById(R.id.lvPhotos);
         // Set the Adapter binding it to the ListView

@@ -90,7 +90,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="view all comments"
             android:id="@+id/tvViewAllComments"
-            android:textColor="#B8B8B8"/>
+            android:textColor="#B8B8B8"
+            android:clickable="true" />
 
         <TextView
             android:layout_width="wrap_content"
