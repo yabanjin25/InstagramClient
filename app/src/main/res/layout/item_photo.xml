@@ -57,15 +57,49 @@
         android:scaleType="fitXY"
         android:minHeight="50dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Caption"
-        android:id="@+id/tvCaption"
-        android:textSize="20sp"
-        android:maxLines="3"
-        android:ellipsize="end" />
+        android:layout_margin="20dp">
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Likes"
+            android:id="@+id/tvLikes"
+            android:layout_gravity="left"
+            android:drawableLeft="@drawable/tiny_clock"
+            android:textColor="#517fa4"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Caption"
+            android:id="@+id/tvCaption"
+            android:textSize="20sp"
+            android:maxLines="3"
+            android:ellipsize="end" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="view all comments"
+            android:id="@+id/tvViewAllComments"
+            android:textColor="#B8B8B8"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Comment"
+            android:id="@+id/tvComment" />
+
+    </LinearLayout>
 
 
 </LinearLayout>
