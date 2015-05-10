@@ -2,7 +2,9 @@ package com.example.ayamanaka.instagramclient;
 
 import android.text.format.DateUtils;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class InstagramPhoto {
     public InstagramUser user;
@@ -21,5 +23,10 @@ public class InstagramPhoto {
         String displayTimeString = displayTime.toString();
         String[] displayTimeArray = displayTimeString.split(" ");
         return displayTimeArray[0] + displayTimeArray[1].charAt(0);
+    }
+
+    public String getLikesCountForDisplay()
+    {
+        return NumberFormat.getNumberInstance(Locale.US).format(likesCount);
     }
 }

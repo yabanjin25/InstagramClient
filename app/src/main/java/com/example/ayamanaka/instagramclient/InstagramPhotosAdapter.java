@@ -34,17 +34,21 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
             // create a new view from template
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_photo, parent, false);
         }
+
         // Look up the views for populating the data (image, caption)
         TextView tvUsernameMain = (TextView) convertView.findViewById(R.id.tvUsernameMain);
         TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
         TextView tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
+        TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
         ImageView ivUserProfilePicture = (ImageView) convertView.findViewById(R.id.ivUserProfilePicture);
+
         // Insert the model data into each of the view items
         String authorUsername = photo.user.username;
         tvCreatedTime.setText(photo.getCreatedTimeForDisplay());
+        tvLikes.setText(photo.getLikesCountForDisplay() + " likes");
         tvUsernameMain.setText(authorUsername);
-        String boldAuthorUsernameWithCaption = "<b>@" + authorUsername + "</b> -- " + photo.caption;
+        String boldAuthorUsernameWithCaption = "<b>" + authorUsername + "</b> -- " + photo.caption;
         tvCaption.setText(Html.fromHtml(boldAuthorUsernameWithCaption));
         // Clear out the ImageView if it was recycled (right away)
         ivPhoto.setImageResource(0);
@@ -53,7 +57,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
                 .cornerRadiusDp(90)
                 .oval(false)
                 .build();
-
         Picasso.with(getContext())
                 .load(photo.imageUrl)
                 .placeholder(R.drawable.blue_instagram_icon)

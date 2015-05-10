@@ -71,7 +71,7 @@
             android:text="Likes"
             android:id="@+id/tvLikes"
             android:layout_gravity="left"
-            android:drawableLeft="@drawable/tiny_clock"
+            android:drawableLeft="@drawable/blue_heart"
             android:textColor="#517fa4"
             />
 
